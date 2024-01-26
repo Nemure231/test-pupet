@@ -9,7 +9,12 @@ chromium.setGraphicsMode = false
 export async function handler(event, context) {
   try {
 
-    const { pageToScreenshot = '' } = event.queryStringParameters;
+    const rawBody = String(event.body).replace(/'/g, '\'').replace(/\\'/g, "'");
+
+    // Parse the JSON string into an object
+    const parsedBody = JSON.parse(rawBody);
+
+    const pageToScreenshot = parsedBody.pageToScreenshot;
 
     if (!pageToScreenshot) return {
       statusCode: 400,
