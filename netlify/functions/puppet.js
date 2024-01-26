@@ -9,38 +9,43 @@ chromium.setGraphicsMode = false
 export async function handler(event, context) {
   try {
 
-    // const rawBody = String(event.body).replace(/'/g, '\'').replace(/\\'/g, "'");
+    const rawBody = String(event.body);
+    const params = new URLSearchParams(rawBody);
 
-    // Parse the JSON string into an object
-    // const parsedBody = JSON.parse(rawBody);
+    // Create an object to store the parsed data
+    const parsedBody = {};
 
-    // const pageToScreenshot = parsedBody.pageToScreenshot;
+    // Iterate through the parameters and set them in the object
+    params.forEach((value, key) => {
+      parsedBody[key] = value;
+    });
 
-    // if (!pageToScreenshot) return {
-    //   statusCode: 400,
-    //   body: JSON.stringify({ message: 'Page URL not defined' })
-    // }
+    const pageToScreenshot = parsedBody.pageToScreenshot;
+
+    if (!pageToScreenshot) return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Page URL not defined' })
+    }
 
 
-    // const browser = await puppeteer.launch({
-    //   args: chromium.args,
-    //   defaultViewport: chromium.defaultViewport,
-    //   executablePath: process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath('/var/task/node_modules/@sparticuz/chromium/bin')),
-    // })
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath('/var/task/node_modules/@sparticuz/chromium/bin')),
+    })
 
-    // const page = await browser.newPage()
-    // await page.goto(pageToScreenshot, { waitUntil: 'networkidle2' });
+    const page = await browser.newPage()
+    await page.goto(pageToScreenshot, { waitUntil: 'networkidle2' });
 
-    // const screenshot = await page.screenshot({ encoding: 'binary' });
+    const screenshot = await page.screenshot({ encoding: 'binary' });
 
-    // await browser.close();
+    await browser.close();
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        // message: `Complete screenshot of ${pageToScreenshot}`,
-        // buffer: screenshot,
-        logg: event.body
+        message: `Complete screenshot of ${pageToScreenshot}`,
+        buffer: screenshot,
       })
     }
 
