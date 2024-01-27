@@ -2,7 +2,7 @@
 [build]
   command = "npm i"
   functions = "netlify/functions"
-  publish = "."
+  publish = "public/"
 
 [dev]
   autoLaunch = false
