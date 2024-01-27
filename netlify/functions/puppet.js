@@ -20,11 +20,12 @@ export async function handler(event, context) {
       parsedBody[key] = value;
     });
 
-    const pageToScreenshot = parsedBody.pageToScreenshot;
+    const pageToScreenshot = 'https://ajakuy.com';
 
     if (!pageToScreenshot) return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Page URL not defined' })
+      body: JSON.stringify({ message: 'Page URL not defined' }),
+      
     }
 
 
